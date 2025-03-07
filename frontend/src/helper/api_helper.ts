@@ -72,6 +72,7 @@ const baseQueryWithReauthMiddleware = async (
           isRefreshing = true;
           const authUser = JSON.parse(localStorage.getItem("authUser") || "{}");
           const refreshToken = authUser ? authUser.refreshToken : null;
+
           refreshPromise = Promise.resolve(
             baseQuery(
               {
@@ -95,7 +96,7 @@ const baseQueryWithReauthMiddleware = async (
                   "authUser",
                   JSON.stringify(updatedAuthUser)
                 );
-                // console.log(refreshResult, "token");
+
                 isRefreshing = false;
                 return refreshTokenResult;
               } else {
@@ -105,16 +106,23 @@ const baseQueryWithReauthMiddleware = async (
                   JSON.stringify({ visible: "true" })
                 );
                 window.location.href = "/logout";
+                return null;
               }
-              return null;
             })
             .catch((error: any) => {
-              console.error("Error refreshing token", error);
+              // console.error("Error refreshing token", error);
               isRefreshing = false;
               window.location.href = "/logout";
+              return null;
             });
         }
-        await refreshPromise;
+
+        const newToken = await refreshPromise;
+
+        if (!newToken) {
+          return result;
+        }
+
         result = await baseQueryWithReauthMiddleware(args, api, extraOptions);
         break;
 
@@ -123,7 +131,6 @@ const baseQueryWithReauthMiddleware = async (
           result.error?.data?.error ||
           "Sorry! something went wrong, please contact our support team";
     }
-    //console.log(message, "messageLog");
     if (message) {
       throw new Error(message);
     }
