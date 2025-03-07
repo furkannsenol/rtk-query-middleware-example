@@ -49,4 +49,5 @@ Frontend uygulamasını çalıştırmak için `frontend` dizinine giderek şu ko
 ## Screenshot
 ![Ekran görüntüsü 2025-01-26 011723](https://github.com/user-attachments/assets/88762cc1-dad3-45bb-9e60-787e839889dc)
 ![Ekran görüntüsü 2025-01-26 012737](https://github.com/user-attachments/assets/349331ed-c0cc-4d60-85b3-130b9e2b4a29)
+![image](https://github.com/user-attachments/assets/9e7e23e3-794a-4c3a-b47c-7e46b9528932)
 ![Ekran görüntüsü 2025-01-26 012644](https://github.com/user-attachments/assets/fe74f35b-36f8-4f34-a8cd-4401e92b5f82)
