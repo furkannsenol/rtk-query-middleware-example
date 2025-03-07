@@ -1,6 +1,6 @@
 import React from "react";
 import { useGetProductsQuery, useGetCategoriesQuery } from "./apiSlice";
-import { Table, Button } from "reactstrap";
+import { Table, Button, Spinner } from "reactstrap";
 
 const ProductList = () => {
   // Fetch products and categories
@@ -21,9 +21,9 @@ const ProductList = () => {
   } = useGetCategoriesQuery();
 
   // Loading states
-  if (productsLoading || categoriesLoading) {
-    return <p>Loading...</p>;
-  }
+  // if (productsLoading || categoriesLoading) {
+  //   return <p>Loading...</p>;
+  // }
 
   // Error states
   if (productsError) {
@@ -33,9 +33,7 @@ const ProductList = () => {
   }
   if (categoriesError) {
     return (
-      <p>
-        Error fetching categories: {categoriesFetchError.message as string}
-      </p>
+      <p>Error fetching categories: {categoriesFetchError.message as string}</p>
     );
   }
 
@@ -55,35 +53,48 @@ const ProductList = () => {
             refetchProducts();
             refetchCategories();
           }}
+          disabled={productsLoading || categoriesLoading}
+          style={{ minWidth: "100px" }}
         >
-          Refresh
+          {productsLoading || categoriesLoading ? (
+            <Spinner size="sm" />
+          ) : (
+            "Refresh"
+          )}
         </Button>
       </div>
-      {products && products.length > 0 && (
-        <Table bordered responsive>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Name</th>
-              <th>Price</th>
-              <th>Category</th>
-              <th>Stock</th>
-              <th>Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            {products.map((product: any, index: any) => (
-              <tr key={product.id}>
-                <td>{index + 1}</td>
-                <td>{product.name}</td>
-                <td>${product.price.toFixed(2)}</td>
-                <td>{getCategoryName(product.categoryId)}</td>
-                <td>{product.stock}</td>
-                <td>{product.description}</td>
+      {productsLoading || categoriesLoading ? (
+        <div className="text-center py-4">
+          <Spinner size={"md"} />
+        </div>
+      ) : (
+        products &&
+        products.length > 0 && (
+          <Table bordered responsive>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Category</th>
+                <th>Stock</th>
+                <th>Description</th>
               </tr>
-            ))}
-          </tbody>
-        </Table>
+            </thead>
+            <tbody>
+              {products.map((product: any, index: any) => (
+                <tr key={product.id}>
+                  <td>{index + 1}</td>
+                  <td>{product.name}</td>
+                  <td>${product.price.toFixed(2)}</td>
+                  <td>{getCategoryName(product.categoryId)}</td>
+                  <td>{product.stock}</td>
+                  <td>{product.description}</td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        )
       )}
     </div>
   );
