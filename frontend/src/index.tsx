@@ -9,6 +9,7 @@ import { BrowserRouter } from "react-router-dom";
 
 import { Provider } from "react-redux";
 import store from "./slices";
+import ErrorBoundary from "./wrapper/ErrorBoundary";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -18,9 +19,9 @@ root.render(
   <Provider store={store}>
     <React.Fragment>
       <BrowserRouter>
-        {/* <ErrorBoundary> */}
-        <App />
-        {/* </ErrorBoundary> */}
+        <ErrorBoundary>
+          <App />
+        </ErrorBoundary>
       </BrowserRouter>
     </React.Fragment>
   </Provider>
