@@ -1,12 +1,13 @@
 import React from "react";
 import { useGetProductsQuery, useGetCategoriesQuery } from "./apiSlice";
 import { Table, Button, Spinner } from "reactstrap";
+import { getErrorMessage } from "../../utils/errorHelper";
 
 const ProductList = () => {
   // Fetch products and categories
   const {
     data: products,
-    isLoading: productsLoading,
+    isFetching: productsLoading,
     isError: productsError,
     error: productsFetchError,
     refetch: refetchProducts,
@@ -14,26 +15,25 @@ const ProductList = () => {
 
   const {
     data: categories,
-    isLoading: categoriesLoading,
+    isFetching: categoriesLoading,
     isError: categoriesError,
     error: categoriesFetchError,
     refetch: refetchCategories,
   } = useGetCategoriesQuery();
 
-  // Loading states
-  // if (productsLoading || categoriesLoading) {
-  //   return <p>Loading...</p>;
-  // }
-
   // Error states
   if (productsError) {
     return (
-      <p>Error fetching products: {productsFetchError.message as string}</p>
+      <p className="p-1">
+        Error fetching products: {getErrorMessage(productsFetchError)}
+      </p>
     );
   }
   if (categoriesError) {
     return (
-      <p>Error fetching categories: {categoriesFetchError.message as string}</p>
+      <p className="p-1">
+        Error fetching categories: {getErrorMessage(categoriesFetchError)}
+      </p>
     );
   }
 
@@ -48,7 +48,7 @@ const ProductList = () => {
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h1>Product List</h1>
         <Button
-          color="success"
+          color="dark"
           onClick={() => {
             refetchProducts();
             refetchCategories();

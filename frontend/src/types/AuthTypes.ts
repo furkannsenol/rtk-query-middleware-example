@@ -9,3 +9,8 @@ export interface ILoginRequest {
   username: string;
   password: string;
 }
+
+export interface IRefreshToken {
+  token: string;
+  refreshToken: string;
+}
