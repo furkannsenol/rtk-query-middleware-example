@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useLoginUserMutation } from "./apiSlice";
 import {
   Container,
@@ -16,14 +15,14 @@ import {
 } from "reactstrap";
 import { toast, ToastContainer } from "react-toastify";
 import TokenExpiredModal from "./TokenExpiredModal";
+import { IWithRouterProps } from "../../../types/routerTypes";
+import WithRouter from "../../../wrapper/WithRouter";
 
-const Login = () => {
+const Login: React.FC<IWithRouterProps> = ({ router }) => {
   //State
   const [isTokenExpired, setIsTokenExpired] = useState(false);
   const [username, setUsername] = useState("furkannsenol");
   const [password, setPassword] = useState("123456");
-
-  const navigate = useNavigate();
 
   //login Service
   const [loginUser, { isLoading }] = useLoginUserMutation();
@@ -37,9 +36,9 @@ const Login = () => {
     }
 
     if (localStorage.getItem("authUser")) {
-      navigate("/home");
+      router.navigate("/home");
     }
-  }, [navigate]);
+  }, [router]);
 
   const handleLogin = async () => {
     try {
@@ -47,7 +46,7 @@ const Login = () => {
         .unwrap()
         .then((res) => {
           localStorage.setItem("authUser", JSON.stringify(res));
-          navigate("/home");
+          router.navigate("/home");
         })
         .catch((error) => toast.error(error.message, { autoClose: 2000 }));
     } catch (err) {
@@ -161,4 +160,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default WithRouter(Login);

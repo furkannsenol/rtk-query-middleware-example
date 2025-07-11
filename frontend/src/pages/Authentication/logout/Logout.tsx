@@ -1,15 +1,19 @@
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import WithRouter from "../../../wrapper/WithRouter";
+import { IWithRouterProps } from "../../../types/routerTypes";
 
-const Logout = () => {
-  const navigate = useNavigate();
-
+const Logout: React.FC<IWithRouterProps> = ({ router }) => {
   useEffect(() => {
     localStorage.removeItem("authUser");
-    navigate("/login");
-  }, [navigate]);
 
-  return <div>Exiting...</div>;
+    const timeout = setTimeout(() => {
+      router.navigate("/login");
+    }, 1000);
+
+    return () => clearTimeout(timeout);
+  }, [router]);
+
+  return <div className="p-1">Signing out, please wait...</div>;
 };
 
-export default Logout;
+export default WithRouter(Logout);
