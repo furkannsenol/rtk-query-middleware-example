@@ -5,7 +5,7 @@ import { Route, Routes } from "react-router-dom";
 import AuthProtected from "./routes/AuthProtected";
 import Layout from "./layouts";
 import NonAuthLayout from "./layouts/NonLayout";
-import LoadingSuspense from "./layouts/LoadingSuspense";
+import LoadingSuspense from "./wrapper/LoadingSuspense";
 
 function App() {
   return (
